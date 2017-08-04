@@ -385,7 +385,7 @@ class AreaChart extends React.Component {
 
 const BoxDefault = (props) => {
   return (
-    <div className="col-md-6">
+  <div className="col-xs-12">
       <div className="box box-default">
         <div className="box-header with-border">
           <i className="fa fa-warning"></i>
@@ -399,7 +399,7 @@ const BoxDefault = (props) => {
         {/* <!-- /.box-body --> */}
       </div>
       {/* <!-- /.box --> */}
-    </div>
+     </div>
   )
 }
 
@@ -476,6 +476,31 @@ const BoxLogin = (props) => {
   )
 }
 
+const Table = (props) => {
+	return (
+		<div className="box-body table-responsive no-padding">
+              <table className="table table-hover">
+              <tr>
+              	<th>ID</th>
+              	<th>Tabel</th>
+              	<th>Kolom</th>
+              	<th>Hits</th>
+              </tr>
+              {props.children}
+              </table>
+       </div>
+	);
+
+}
+
+const TableRow = (props) => {
+	return (
+		<tr>
+			<td></td>
+		</tr>
+	);
+}
+
 /* --------------------- AdminLTE Components  ----------------------->>>>>> */
 
 /* <<<<<<--------------------- Main app ----------------------- */
@@ -491,20 +516,55 @@ const HeaderApp = (props) => {
       </HeaderLte>
   )
 }
-
-const PageApp = (props) => {
+class PageApp extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			"isopen":"no",
+		};
+	}
+	openForm(){
+		var status = (this.state.isopen === "yes") ? "no":"yes";
+		this.setState({"isopen": status});
+	}
+	
+	render() {
+	var rows = [];
+	var data = [{"id":"1","table":"data","column":"3","hits":"267"}];
+	data.map((row) => {
+		rows.push(<tr><td>{row.id}</td><td>{row.table}</td><td>{row.column}</td><td>{row.hits}</td></tr>);
+	});
+	var forms = [];
+	var add = (this.state.isopen === "no") ? null : <div className= "row">
+      		<BoxDefault tittle="Tambah Table" >
+      			<div className="row">
+      				<input type="text" className="col-md-5 col-xs-12" />
+      				<input type="number" className="col-md-1 col-md-offset-7 col-xs-3" />
+      			</div>
+      		</BoxDefault>
+       </div>;
   return (
     <PageLte header="Menu Tabel" desc="Buat dan hapus tabel">
       <div className="row">
-      		<a className="btn btn-primary">Tambah</a>
+      		<div className="col-md-12 col-sm-12">
+      			<a className="btn btn-primary" onClick={this.openForm.bind(this)}>Tambah</a>
+      			<p>{this.state.isopen}</p>
+      		</div>
+      	</div>
+      	<div className="row">
+      		{add}
       	</div>
       	<div className= "row">
       		<BoxDefault tittle="Daftar Table" >
-      		
+      			<Table>
+      				{rows}
+      			</Table>
       		</BoxDefault>
        </div>
     </PageLte>
   )
+}
+
 }
 
 const SidebarApp = (props) => {
@@ -512,10 +572,10 @@ const SidebarApp = (props) => {
     <SidebarLte>
       <SidebarMenu header="Menu Utama" desc="menu utama">
         <SidebarList href="index.html" text="Dashboard" />
-        <SidebarList href="#" text="Daftar tabel" />
-        <SidebarList href="#" text="Daftar akun" />
-        <SidebarList href="#" text="Daftar Blacklist" />
-        <SidebarList href="#" text="Tutorial" />
+        <SidebarList href="tabelreact.html" text="Daftar tabel" />
+        <SidebarList href="akunreact.html" text="Daftar akun" />
+        <SidebarList href="blacklistreact.html" text="Daftar Blacklist" />
+        <SidebarList href="tutorialreact.html" text="Tutorial" />
       </SidebarMenu>
     </SidebarLte>
   )
