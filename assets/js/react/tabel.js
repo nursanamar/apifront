@@ -521,7 +521,30 @@ class PageApp extends React.Component {
 		super(props);
 		this.state = {
 			"isopen":"no",
+			"tableName":"",
+			"tableColumn":"",
+			"forms":""
 		};
+		this.tableName = this.tableName.bind(this);
+		this.tableColumn = this.tableColumn.bind(this);
+		this.openForms = this.openForms.bind(this);
+	}
+	tableName(e){
+		this.setState({
+			"tableName": e.target.value
+		});
+	}
+	tableColumn(e){
+		this.setState({
+			"tableColumn": e.target.value
+		});
+	}
+	openForms(){
+		var forms = "asasa";
+		//forms.push(<div className="row"><form><input type="text" value="id" /></form</div>);
+		this.setState({
+			"forms": forms
+		});
 	}
 	openForm(){
 		var status = (this.state.isopen === "yes") ? "no":"yes";
@@ -534,12 +557,24 @@ class PageApp extends React.Component {
 	data.map((row) => {
 		rows.push(<tr><td>{row.id}</td><td>{row.table}</td><td>{row.column}</td><td>{row.hits}</td></tr>);
 	});
-	var forms = [];
+	var forms = this.state.forms;
 	var add = (this.state.isopen === "no") ? null : <div className= "row">
       		<BoxDefault tittle="Tambah Table" >
       			<div className="row">
-      				<input type="text" className="col-md-5 col-xs-12" />
-      				<input type="number" className="col-md-1 col-md-offset-7 col-xs-3" />
+      				<div className="col-xs-5">
+      					<input type="text" className="form-control" placeholder="Nama tabel" onChange={this.tableName} value={this.state.tableName} />
+      				</div>
+      				<div className="col-xs-4 col-md-4 col-lg-4">
+      					<input type="number" className="form-control" placeholder="Jumlah kolom" onChange={this.tableColumn} value={this.state.tableColumn} />
+      				</div>
+      				<div>
+      					<a className="btn btn-default" onClick={this.openForms}>Ok</a>
+      				</div>
+      			</div>
+      			<div className="row">
+      				<div className="col-sm-12">
+      					{forms}
+      				</div>
       			</div>
       		</BoxDefault>
        </div>;
