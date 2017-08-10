@@ -510,10 +510,10 @@ const SidebarApp = (props) => {
     <SidebarLte>
       <SidebarMenu header="Menu Utama" desc="menu utama">
         <SidebarList href="index.html" text="Dashboard" />
-        <SidebarList href="#" text="Daftar tabel" />
-        <SidebarList href="#" text="Daftar akun" />
-        <SidebarList href="#" text="Daftar Blacklist" />
-        <SidebarList href="#" text="Tutorial" />
+        <SidebarList href="tabelreact.html" text="Daftar tabel" />
+        <SidebarList href="akunreact.html" text="Daftar akun" />
+        <SidebarList href="blacklistreact.html" text="Daftar Blacklist" />
+        <SidebarList href="tutorialreact.html" text="Tutorial" />
       </SidebarMenu>
     </SidebarLte>
   )

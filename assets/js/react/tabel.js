@@ -540,8 +540,45 @@ class PageApp extends React.Component {
 		});
 	}
 	openForms(){
-		var forms = "asasa";
-		//forms.push(<div className="row"><form><input type="text" value="id" /></form</div>);
+		var forms = [];
+		forms.push(
+			<div className="row">
+			<form>
+				<div className="col-sm-4 col-md-4">
+				<label htmlFor="name">Nama</label>
+				<input type="text" value="id" className="form-control" disabled name="name" />
+				</div>
+				<div className="col-sm-4 col-md-4">
+				<label htmlFor="constraint">Ukuran</label>
+				<input type="number" name="constraint" className="form-control" value="11" disabled />
+				</div>
+				<div className="col-sm-4 col-md-4">
+				<label htmlFor="type">Type</label>
+				<select className="form-control" name="type"><option disabled>varchar</option><option selected>int</option></select>
+				</div>
+		</form>
+		</div>
+		);
+		for(var i = 0; i < this.state.tableColumn;i++){
+			forms.push(
+			<div className="row">
+			<form>
+				<div className="col-sm-4 col-md-4">
+				<label htmlFor="name">Nama</label>
+				<input type="text" className="form-control" name="name" />
+				</div>
+				<div className="col-sm-4 col-md-4">
+				<label htmlFor="constraint">Ukuran</label>
+				<input type="number" name="constraint" className="form-control" />
+				</div>
+				<div className="col-sm-4 col-md-4">
+				<label htmlFor="type">Type</label>
+				<select className="form-control" name="type"><option>varchar</option><option>int</option></select>
+				</div>
+		</form>
+		</div>
+		);
+		}
 		this.setState({
 			"forms": forms
 		});
@@ -572,8 +609,11 @@ class PageApp extends React.Component {
       				</div>
       			</div>
       			<div className="row">
+      			</div>
+      			<div className="row">
       				<div className="col-sm-12">
-      					{forms}
+      					
+      						{forms}
       				</div>
       			</div>
       		</BoxDefault>
