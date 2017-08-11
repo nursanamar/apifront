@@ -543,16 +543,26 @@ class PageApp extends React.Component {
 		});
 	}
 	submitForm(){
-		var data = $('form').serialize();
+		var data = [];
+		
+		$('form').each(function(){
+			var sr = $(this).serializeArray();
+			var column = {};
+			sr.map((dat) => {
+				column[dat.name] = dat.value;
+			});
+			 data.push(column);
+		});
+		
 		this.setState({
-			"data": data
+			"data": JSON.stringify(data)
 		});
 	}
 	openForms(){
 		var forms = [];
 		forms.push(
 			<div className="row">
-			<form>
+			
 				<div className="col-sm-4 col-md-4">
 				<label htmlFor="name">Nama</label>
 				<input type="text" value="id" className="form-control" disabled name="name" />
@@ -565,7 +575,7 @@ class PageApp extends React.Component {
 				<label htmlFor="type">Type</label>
 				<select className="form-control" name="type" disabled><option label="VARCHAR">varchar</option><option selected label="INT">int</option></select>
 				</div>
-		</form>
+		
 		</div>
 		);
 		for(var i = 0; i < this.state.tableColumn;i++){
