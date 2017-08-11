@@ -523,11 +523,14 @@ class PageApp extends React.Component {
 			"isopen":"no",
 			"tableName":"",
 			"tableColumn":"",
-			"forms":""
+			"forms":"",
+			"button":"",
+			"data":""
 		};
 		this.tableName = this.tableName.bind(this);
 		this.tableColumn = this.tableColumn.bind(this);
 		this.openForms = this.openForms.bind(this);
+		this.submitForm = this.submitForm.bind(this);
 	}
 	tableName(e){
 		this.setState({
@@ -537,6 +540,12 @@ class PageApp extends React.Component {
 	tableColumn(e){
 		this.setState({
 			"tableColumn": e.target.value
+		});
+	}
+	submitForm(){
+		var data = $('form').serialize();
+		this.setState({
+			"data": data
 		});
 	}
 	openForms(){
@@ -554,7 +563,7 @@ class PageApp extends React.Component {
 				</div>
 				<div className="col-sm-4 col-md-4">
 				<label htmlFor="type">Type</label>
-				<select className="form-control" name="type"><option disabled>varchar</option><option selected>int</option></select>
+				<select className="form-control" name="type" disabled><option label="VARCHAR">varchar</option><option selected label="INT">int</option></select>
 				</div>
 		</form>
 		</div>
@@ -573,14 +582,16 @@ class PageApp extends React.Component {
 				</div>
 				<div className="col-sm-4 col-md-4">
 				<label htmlFor="type">Type</label>
-				<select className="form-control" name="type"><option>varchar</option><option>int</option></select>
+				<select className="form-control" name="type"><option label="VARCHAR">varchar</option><option label="INT">int</option></select>
 				</div>
 		</form>
 		</div>
 		);
 		}
+		var button = <a className="btn btn-primary" onClick={this.submitForm}>Submit</a>;
 		this.setState({
-			"forms": forms
+			"forms": forms,
+			"button": button
 		});
 	}
 	openForm(){
@@ -595,6 +606,7 @@ class PageApp extends React.Component {
 		rows.push(<tr><td>{row.id}</td><td>{row.table}</td><td>{row.column}</td><td>{row.hits}</td></tr>);
 	});
 	var forms = this.state.forms;
+	var button = this.state.button;
 	var add = (this.state.isopen === "no") ? null : <div className= "row">
       		<BoxDefault tittle="Tambah Table" >
       			<div className="row">
@@ -614,6 +626,8 @@ class PageApp extends React.Component {
       				<div className="col-sm-12">
       					
       						{forms}
+      						{button}
+      						{this.state.data}
       				</div>
       			</div>
       		</BoxDefault>
