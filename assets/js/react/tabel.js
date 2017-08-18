@@ -480,13 +480,17 @@ const Table = (props) => {
 	return (
 		<div className="box-body table-responsive no-padding">
               <table className="table table-hover">
-              <tr>
-              	<th>ID</th>
-              	<th>Tabel</th>
-              	<th>Kolom</th>
-              	<th>Hits</th>
-              </tr>
-              {props.children}
+                <thead>
+                  <tr>
+                  	<th>ID</th>
+                  	<th>Tabel</th>
+                  	<th>Kolom</th>
+                  	<th>Hits</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {props.children}
+                </tbody>
               </table>
        </div>
 	);
@@ -519,19 +523,40 @@ const HeaderApp = (props) => {
 class PageApp extends React.Component {
 	constructor(props) {
 		super(props);
+    $.ajaxSetup({
+      "headers": {
+        "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im51cnNhbiIsImlzcyI6Ik1vemlsbGFcLzUuMCAoV2luZG93cyBOVCAxMC4wOyBXaW42NDsgeDY0KSBBcHBsZVdlYktpdFwvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lXC82MC4wLjMxMTIuMTAxIFNhZmFyaVwvNTM3LjM2In0.f8CaRQAh66c_rIK_z2Yz50Rwc5QMYAWaCsQ1QAbXtGw",
+
+  },
+    })
 		this.state = {
 			"isopen":"no",
 			"tableName":"",
 			"tableColumn":"",
 			"forms":"",
 			"button":"",
-			"data":""
+			"data":"",
+      "tableData":[],
+
 		};
 		this.tableName = this.tableName.bind(this);
 		this.tableColumn = this.tableColumn.bind(this);
 		this.openForms = this.openForms.bind(this);
 		this.submitForm = this.submitForm.bind(this);
 	}
+
+  componentDidMount(){
+    $.get("http://localhost/apibud/table",function(data){
+      var tableList = [];
+      data.data.forEach((data) => {
+        tableList.push(data);
+      })
+      this.setState({
+        tableData: tableList
+      })
+    }.bind(this))
+  }
+
 	tableName(e){
 		this.setState({
 			"tableName": e.target.value
@@ -544,7 +569,7 @@ class PageApp extends React.Component {
 	}
 	submitForm(){
 		var data = [];
-		
+
 		$('form').each(function(){
 			var sr = $(this).serializeArray();
 			var column = {};
@@ -553,16 +578,17 @@ class PageApp extends React.Component {
 			});
 			 data.push(column);
 		});
-		
+
 		this.setState({
-			"data": JSON.stringify(data)
+			"data": data
 		});
+    console.log(data);
 	}
 	openForms(){
 		var forms = [];
 		forms.push(
 			<div className="row">
-			
+
 				<div className="col-sm-4 col-md-4">
 				<label htmlFor="name">Nama</label>
 				<input type="text" value="id" className="form-control" disabled name="name" />
@@ -575,7 +601,7 @@ class PageApp extends React.Component {
 				<label htmlFor="type">Type</label>
 				<select className="form-control" name="type" disabled><option label="VARCHAR">varchar</option><option selected label="INT">int</option></select>
 				</div>
-		
+
 		</div>
 		);
 		for(var i = 0; i < this.state.tableColumn;i++){
@@ -608,12 +634,12 @@ class PageApp extends React.Component {
 		var status = (this.state.isopen === "yes") ? "no":"yes";
 		this.setState({"isopen": status});
 	}
-	
+
 	render() {
 	var rows = [];
-	var data = [{"id":"1","table":"data","column":"3","hits":"267"}];
-	data.map((row) => {
-		rows.push(<tr><td>{row.id}</td><td>{row.table}</td><td>{row.column}</td><td>{row.hits}</td></tr>);
+	var data = this.state.tableData;
+	data.map((row,key) => {
+		rows.push(<tr key={key}><td>{row.id}</td><td>{row.table}</td><td>{row.column}</td><td>{row.hits}</td></tr>);
 	});
 	var forms = this.state.forms;
 	var button = this.state.button;
@@ -634,10 +660,9 @@ class PageApp extends React.Component {
       			</div>
       			<div className="row">
       				<div className="col-sm-12">
-      					
+
       						{forms}
       						{button}
-      						{this.state.data}
       				</div>
       			</div>
       		</BoxDefault>
