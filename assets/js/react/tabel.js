@@ -525,10 +525,11 @@ class PageApp extends React.Component {
 		super(props);
     $.ajaxSetup({
       "headers": {
-        "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im51cnNhbiIsImlzcyI6Ik1vemlsbGFcLzUuMCAoV2luZG93cyBOVCAxMC4wOyBXaW42NDsgeDY0KSBBcHBsZVdlYktpdFwvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lXC82MC4wLjMxMTIuMTAxIFNhZmFyaVwvNTM3LjM2In0.f8CaRQAh66c_rIK_z2Yz50Rwc5QMYAWaCsQ1QAbXtGw",
+        "authorization": "Bearer "+localStorage.getItem("token"),
 
   },
-    })
+});
+console.log(localStorage.getItem("token"));
 		this.state = {
 			"isopen":"no",
 			"tableName":"",
