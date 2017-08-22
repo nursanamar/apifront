@@ -529,6 +529,7 @@ class PageApp extends React.Component {
     $.ajaxSetup({
       "headers": {
         "authorization": "Bearer "+localStorage.getItem("token"),
+        "Content-Type":"application/json",
 
   },
 });
@@ -593,11 +594,17 @@ console.log(localStorage.getItem("token"));
 
     }
     console.log(table);
-    // $.post("http://localhost/apibud/table/addTable",d).done(
-    //   function(res) {
-    //     console.log(res);
-    //   }
-    // );
+    $.post("http://localhost/apibud/table",JSON.stringify(table)).done(
+      function(res) {
+      var list = this.state.tableData;
+        res.forEach((data) => {
+          list.push(data)
+        });
+        this.setState({
+          'tableData' : list
+        });
+      }.bind(this)
+    );
 	}
 	openForms(){
 		var forms = [];
@@ -633,7 +640,7 @@ console.log(localStorage.getItem("token"));
 				</div>
 				<div className="col-sm-4 col-md-4">
 				<label htmlFor="type">Type</label>
-				<select className="form-control" name="type"><option label="VARCHAR">varchar</option><option label="INT">int</option></select>
+				<select className="form-control" name="type"><option value="VARCHAR">varchar</option><option value="INT">int</option></select>
 				</div>
 		</form>
 		</div>
