@@ -523,6 +523,9 @@ const HeaderApp = (props) => {
 class PageApp extends React.Component {
 	constructor(props) {
 		super(props);
+    if(localStorage.getItem("token") === null){
+        window.location.assign("login.html");
+    }
     $.ajaxSetup({
       "headers": {
         "authorization": "Bearer "+localStorage.getItem("token"),
@@ -583,7 +586,18 @@ console.log(localStorage.getItem("token"));
 		this.setState({
 			"data": data
 		});
-    console.log(data);
+    var table = {
+      "name":this.state.tableName,
+      "columns": this.state.tableColumn,
+      "data": data,
+
+    }
+    console.log(table);
+    // $.post("http://localhost/apibud/table/addTable",d).done(
+    //   function(res) {
+    //     console.log(res);
+    //   }
+    // );
 	}
 	openForms(){
 		var forms = [];
@@ -640,7 +654,7 @@ console.log(localStorage.getItem("token"));
 	var rows = [];
 	var data = this.state.tableData;
 	data.map((row,key) => {
-		rows.push(<tr key={key}><td>{row.id}</td><td>{row.table}</td><td>{row.column}</td><td>{row.hits}</td></tr>);
+		rows.push(<tr key={key}><td>{row.id}</td><td>{row.table}</td><td>{row.columns}</td><td>{row.hits}</td></tr>);
 	});
 	var forms = this.state.forms;
 	var button = this.state.button;
