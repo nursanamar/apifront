@@ -480,36 +480,63 @@ const BoxLogin = (props) => {
 
 /* <<<<<<--------------------- Main app ----------------------- */
 const HeaderApp = (props) => {
+  var id = localStorage.getItem('id');
+  var name = localStorage.getItem('name');
   return (
       <HeaderLte>
         <Logo />
         <NavLte>
           <CustomNav>
-            <User name="Nursan amar" image="assets/img/avatar04.png" desc="Admin" />
+            <User name={name} image="assets/img/avatar04.png" desc="Admin" />
           </CustomNav>
         </NavLte>
       </HeaderLte>
   )
 }
 
-const PageApp = (props) => {
-  return (
-    <PageLte header="Menu Utama" desc="Statistik data">
-      <div className="row">
-        <BoxSmall value="56" desc="tabel" bg="bg-aqua" />
-        <BoxSmall value="34" desc="User" bg="bg-aqua" />
-        <BoxSmall value="23" desc="Blacklist" bg="bg-aqua" />
-        <BoxSmall value="231" desc="hits" bg="bg-aqua" />
-      </div>
-    </PageLte>
-  )
+
+class PageApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      'data' : [],
+    };
+    $.ajaxSetup({
+      "headers": {
+        "authorization": "Bearer "+localStorage.getItem("token"),
+        "Content-Type":"application/json",
+
+  },
+});
+  }
+
+  componentDidMount(){
+    $.get("http://localhost/apibud/stat",function(data) {
+      this.setState({
+        'data': data
+      })
+    }.bind(this));
+  }
+  render(){
+    var data = this.state.data;
+    return (
+      <PageLte header="Menu Utama" desc="Statistik data">
+        <div className="row">
+          <BoxSmall value={data.tabels} desc="tabel" bg="bg-aqua" />
+          <BoxSmall value={data.user} desc="User" bg="bg-aqua" />
+          <BoxSmall value={data.blacklist} desc="Blacklist" bg="bg-aqua" />
+          <BoxSmall value={data.hits} desc="hits" bg="bg-aqua" />
+        </div>
+      </PageLte>
+    )
+  }
 }
 
 const SidebarApp = (props) => {
   return (
     <SidebarLte>
       <SidebarMenu header="Menu Utama" desc="menu utama">
-        <SidebarList href="index.html" text="Dashboard" />
+        <SidebarList href="react.html" text="Dashboard" />
         <SidebarList href="tabelreact.html" text="Daftar tabel" />
         <SidebarList href="akunreact.html" text="Daftar akun" />
         <SidebarList href="blacklistreact.html" text="Daftar Blacklist" />
@@ -526,6 +553,10 @@ const FooterApp = (props) => {
 }
 
 class App extends React.Component {
+  constructor(props){
+    super(props);
+
+  }
 	render(){
 		return <div>
 		<HeaderApp />
@@ -535,6 +566,12 @@ class App extends React.Component {
 		</div>
 	}
 
+}
+if(localStorage.getItem('token') === null){
+    window.location.assign("login.html");
+}
+if((localStorage.getItem('id') === null) && (localStorage.getItem('name') === null)){
+    window.location.assign("login.html");
 }
 ReactDOM.render(
 	<App />,

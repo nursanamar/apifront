@@ -509,17 +509,20 @@ const TableRow = (props) => {
 
 /* <<<<<<--------------------- Main app ----------------------- */
 const HeaderApp = (props) => {
+  var id = localStorage.getItem('id');
+  var name = localStorage.getItem('name');
   return (
       <HeaderLte>
         <Logo />
         <NavLte>
           <CustomNav>
-            <User name="Nursan amar" image="assets/img/avatar04.png" desc="Admin" />
+            <User name={name} image="assets/img/avatar04.png" desc="Admin" />
           </CustomNav>
         </NavLte>
       </HeaderLte>
   )
 }
+
 class PageApp extends React.Component {
 	constructor(props) {
 		super(props);
@@ -694,7 +697,7 @@ console.log(localStorage.getItem("token"));
       <div className="row">
       		<div className="col-md-12 col-sm-12">
       			<a className="btn btn-primary" onClick={this.openForm.bind(this)}>Tambah</a>
-      			<p>{this.state.isopen}</p>
+      			<p></p>
       		</div>
       	</div>
       	<div className="row">
@@ -717,7 +720,7 @@ const SidebarApp = (props) => {
   return (
     <SidebarLte>
       <SidebarMenu header="Menu Utama" desc="menu utama">
-        <SidebarList href="index.html" text="Dashboard" />
+        <SidebarList href="react.html" text="Dashboard" />
         <SidebarList href="tabelreact.html" text="Daftar tabel" />
         <SidebarList href="akunreact.html" text="Daftar akun" />
         <SidebarList href="blacklistreact.html" text="Daftar Blacklist" />
@@ -743,6 +746,12 @@ class App extends React.Component {
 		</div>
 	}
 
+}
+if(localStorage.getItem('token') === null){
+    window.location.assign("login.html");
+}
+if((localStorage.getItem('id') === null) && (localStorage.getItem('name') === null)){
+    window.location.assign("login.html");
 }
 ReactDOM.render(
 	<App />,

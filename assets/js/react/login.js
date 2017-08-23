@@ -524,10 +524,14 @@ class LoginApp extends React.Component {
       var status = res.status;
       var desc = res.desc;
       var token = "";
+      var user;
       if (status === "ok") {
         token = res.data.token;
+        user = res.data.user;
         localStorage.setItem("token",token);
-        window.location.assign("tabelreact.html");
+        localStorage.setItem('id',user.id);
+        localStorage.setItem('name',user.name);
+        window.location.assign("react.html");
       }else{
         this.setState({
           "feedback": desc
