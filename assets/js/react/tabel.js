@@ -485,7 +485,8 @@ const Table = (props) => {
                   	<th>ID</th>
                   	<th>Tabel</th>
                   	<th>Kolom</th>
-                  	<th>Hits</th>
+                    <th>Hits</th>
+                  	<th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -552,12 +553,12 @@ console.log(localStorage.getItem("token"));
 		this.tableColumn = this.tableColumn.bind(this);
 		this.openForms = this.openForms.bind(this);
 		this.submitForm = this.submitForm.bind(this);
+    this.deleteTable = this.deleteTable.bind(this);
 	}
 
-  searchIndex(id){
+  searchIndex(id,list){
     var index = -1;
     var list = this.state.tableData;
-    console.log(list);
     var filtered = list.find((item,i) => {
       if (item.id === id) {
         index = i;
@@ -565,6 +566,15 @@ console.log(localStorage.getItem("token"));
       }
     });
     return index;
+  }
+
+  deleteTable(id){
+    $.ajax({
+      "url":"http://localhost/apibud/table/"+id,
+      "method": "DELETE",
+    }).done(function(res){
+      this.componentDidMount();
+    }.bind(this))
   }
 
   componentDidMount(){
@@ -617,9 +627,7 @@ console.log(localStorage.getItem("token"));
       function(res) {
         if (res.status === 'ok') {
           var list = this.state.tableData;
-            res.data.forEach((data) => {
-              list.push(data)
-            });
+            list.push(res.data)
             this.setState({
               'tableData' : list,
               "isopen":"no",
@@ -694,7 +702,10 @@ console.log(localStorage.getItem("token"));
 	var rows = [];
 	var data = this.state.tableData;
 	data.map((row,key) => {
-		rows.push(<tr key={key}><td>{row.id}</td><td>{row.table}</td><td>{row.columns}</td><td>{row.hits}</td></tr>);
+		rows.push(<tr key={key}><td>{row.id}</td><td>{row.table}</td><td>{row.columns}</td><td>{row.hits}</td><td><a onClick={() => {
+      console.log('clicked');
+      this.deleteTable(row.id);
+		}}>Hapus</a></td></tr>);
 	});
 	var forms = this.state.forms;
 	var button = this.state.button;
