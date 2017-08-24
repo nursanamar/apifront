@@ -1,9 +1,9 @@
 const Logo = (props) => {
   return <a href="index2.html" className="logo">
     {/* <!-- mini logo for sidebar mini 50x50 pixels --> */}
-    <span className="logo-mini"><b>A</b>LT</span>
+    <span className="logo-mini"><b>Api</b>Bud</span>
     {/* <!-- logo for regular state and mobile devices --> */}
-    <span className="logo-lg"><b>Admin</b>LTE</span>
+    <span className="logo-lg"><b>Api</b>Builder</span>
   </a>
 }
 const Message = (props) => {
@@ -545,6 +545,7 @@ console.log(localStorage.getItem("token"));
 			"button":"",
 			"data":"",
       "tableData":[],
+      "feedback":"",
 
 		};
 		this.tableName = this.tableName.bind(this);
@@ -553,15 +554,30 @@ console.log(localStorage.getItem("token"));
 		this.submitForm = this.submitForm.bind(this);
 	}
 
+  searchIndex(id){
+    var index = -1;
+    var list = this.state.tableData;
+    console.log(list);
+    var filtered = list.find((item,i) => {
+      if (item.id === id) {
+        index = i;
+        return i;
+      }
+    });
+    return index;
+  }
+
   componentDidMount(){
     $.get("http://localhost/apibud/table",function(data){
       var tableList = [];
       data.data.forEach((data) => {
         tableList.push(data);
       })
+
       this.setState({
         tableData: tableList
-      })
+      });
+      console.log(this.searchIndex('2'));
     }.bind(this))
   }
 
@@ -599,13 +615,27 @@ console.log(localStorage.getItem("token"));
     console.log(table);
     $.post("http://localhost/apibud/table",JSON.stringify(table)).done(
       function(res) {
-      var list = this.state.tableData;
-        res.forEach((data) => {
-          list.push(data)
-        });
-        this.setState({
-          'tableData' : list
-        });
+        if (res.status === 'ok') {
+          var list = this.state.tableData;
+            res.data.forEach((data) => {
+              list.push(data)
+            });
+            this.setState({
+              'tableData' : list,
+              "isopen":"no",
+              "tableName":"",
+              "tableColumn":"",
+              "forms":"",
+              "button":"",
+              "data":"",
+
+            });
+            console.log('asas');
+        } else {
+          this.setState({
+            'feedback': res.desc
+          })
+        }
       }.bind(this)
     );
 	}
@@ -688,6 +718,7 @@ console.log(localStorage.getItem("token"));
 
       						{forms}
       						{button}
+                <span>{this.state.feedback}</span>
       				</div>
       			</div>
       		</BoxDefault>
