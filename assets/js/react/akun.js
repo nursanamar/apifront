@@ -616,6 +616,48 @@ class PageApp extends React.Component {
     }.bind(this));
   }
 
+  deleteUser(id){
+    $.ajax({
+      "url":"http://localhost/apibud/user/"+id,
+      "method": "DELETE"
+    }).done(function(res) {
+      this.componentDidMount();
+    }.bind(this))
+  }
+
+  // /****NOTE: Butuh di tinjau ulang
+  // deleteUser(id){
+  //   var temp = this.state.userList;
+  //   $.ajax({
+  //     "url":"http://localhost/apibud/user/"+temp[id].id,
+  //     "method": "DELETE"
+  //   }).done(function(res) {
+  //       temp.slice(id,1);
+  //       console.log(id,temp,temp.slice(id,1));
+  //       this.setState({
+  //         'userList': temp
+  //       })
+  //   }.bind(this))
+  // }
+
+  blockUser(id){
+    var temp = this.state.userList;
+    console.log(temp[id].isBlock,temp[id].id);
+    var data = {
+      "isBlock": (temp[id].isBlock === '0') ? '1':'0'
+    };
+    $.ajax({
+      "url":"http://localhost/apibud/user/"+temp[id].id,
+      "method":"PUT",
+      "data": JSON.stringify(data)
+    }).done(function(res) {
+      temp[id] = res.data;
+      this.setState({
+        "userList": temp
+      })
+    }.bind(this))
+  }
+
   openForms(){
     var status = (this.state.isOpen === 'yes') ? 'no':'yes';
     this.setState({
@@ -635,6 +677,7 @@ class PageApp extends React.Component {
     var users = this.state.userList;
     var usersRow = [];
     users.forEach((data,key) => {
+      var isBlock = (data.isBlock === '1') ? " Unblock" : " Block";
       usersRow.push(
         <tr key={key}>
           <td>{data.id}</td>
@@ -642,13 +685,17 @@ class PageApp extends React.Component {
           <td>{data.name}</td>
           <td>{data.pass}</td>
           <td>
-            <a className="btn btn-sm btn-danger">
+            <a className="btn btn-sm btn-danger" onClick={() => {
+              this.deleteUser(data.id)
+            }}>
               <span className="glyphicon glyphicon-trash"></span>
               <b> Hapus</b>
-            </a>
-            <a className="btn btn-sm btn-warning">
+            </a><span> </span>
+            <a className="btn btn-sm btn-warning" onClick={() => {
+              this.blockUser(key);
+            }}>
               <span className="glyphicon glyphicon-remove-sign"></span>
-              <b> Block</b>
+              <b>{isBlock}</b>
             </a>
           </td>
         </tr>
