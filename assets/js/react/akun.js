@@ -555,6 +555,7 @@ class PageApp extends React.Component {
     if(localStorage.getItem("token") === null){
         window.location.assign("login.html");
     }
+
     $.ajaxSetup({
       "headers": {
         "authorization": "Bearer "+localStorage.getItem("token"),
@@ -564,10 +565,48 @@ class PageApp extends React.Component {
     });
 
     this.state = {
-      'userList':[]
-    }
+      'isOpen':"no",
+      'userList':[],
+      'inputUser':"",
+      "inputName":'',
+      "inputPass":"",
+    };
 
+    this.openForms = this.openForms.bind(this);
+    this.inputUser = this.inputUser.bind(this);
+    this.inputPass = this.inputPass.bind(this);
+    this.inputName = this.inputName.bind(this);
+    this.submitUser = this.submitUser.bind(this);
 	}
+
+  inputUser(e){
+    this.setState({
+      'inputUser': e.target.value
+    })
+  }
+
+  inputPass(e){
+    this.setState({
+      'inputPass': e.target.value
+    })
+  }
+
+  inputName(e){
+    this.setState({
+      'inputName': e.target.value
+    })
+  }
+
+  submitUser(){
+    console.log("SUBMITED");
+  }
+
+  openForms(){
+    var status = (this.state.isOpen === 'yes') ? 'no':'yes';
+    this.setState({
+      'isOpen': status
+    })
+  }
 
   componentDidMount(){
     $.get("http://localhost/apibud/user").done(function(res) {
@@ -587,12 +626,50 @@ class PageApp extends React.Component {
           <td>{data.user}</td>
           <td>{data.name}</td>
           <td>{data.pass}</td>
-          <td><a className="btn btn-sm btn-danger"><span className="glyphicon glyphicon-trash"></span></a> <a className="btn btn-sm btn-warning"><span className="glyphicon glyphicon-trash"></span></a></td>
+          <td>
+            <a className="btn btn-sm btn-danger">
+              <span className="glyphicon glyphicon-trash"></span>
+              <b> Hapus</b>
+            </a>
+            <a className="btn btn-sm btn-warning">
+              <span className="glyphicon glyphicon-remove-sign"></span>
+              <b> Block</b>
+            </a>
+          </td>
         </tr>
       )
     });
+
+    var formTambah = (this.state.isOpen === 'yes') ? <BoxDefault tittle="Tambah User">
+
+        <form onSubmit={this.submitUser} action={this.submitUser}>
+          <div className="form-group">
+            <label htmlFor="user">Username</label>
+            <input autoFocus onChange={this.inputUser} placeholder="Username" className="form-control" type="text" name="user" value={this.state.inputUser} required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="name">Nama</label>
+            <input onChange={this.inputName} placeholder="Nama" className="form-control" type="text" name="name" value={this.state.inputName} required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="pass">Password</label>
+            <input onChange={this.inputPass} placeholder="Password" className="form-control" type="password" name="pass" value={this.state.inputPass} required />
+          </div>
+          <input type='submit' value="tambah" className="btn btn-primary"/>
+        </form>
+
+    </BoxDefault> : "";
   return (
     <PageLte header="Menu User" desc="Daftar Users">
+      {/* <div className="row"> */}
+      	<div className="col-md-12 col-sm-12">
+      		<a className="btn btn-primary" onClick={this.openForms}>Tambah</a>
+      		<p></p>
+      	</div>
+      {/* </div> */}
+      <div className="col-sm-6 col-md-6 col-lg-6">
+        {formTambah}
+      </div>
       <BoxDefault tittle="Daftar User">
         <Table>
           {usersRow}
