@@ -598,7 +598,22 @@ class PageApp extends React.Component {
   }
 
   submitUser(){
-    console.log("SUBMITED");
+    var data = {
+      "user": this.state.inputUser,
+      "pass": this.state.inputPass,
+      "name": this.state.inputName
+    };
+    $.post("http://localhost/apibud/user",JSON.stringify(data)).done(function(res) {
+      var temp = this.state.userList;
+      temp.push(res.data);
+      this.setState({
+        'inputUser':"",
+        "inputName":'',
+        "inputPass":"",
+        'isOpen':"no",
+        "userList": temp
+      })
+    }.bind(this));
   }
 
   openForms(){
@@ -642,7 +657,7 @@ class PageApp extends React.Component {
 
     var formTambah = (this.state.isOpen === 'yes') ? <BoxDefault tittle="Tambah User">
 
-        <form onSubmit={this.submitUser} action={this.submitUser}>
+
           <div className="form-group">
             <label htmlFor="user">Username</label>
             <input autoFocus onChange={this.inputUser} placeholder="Username" className="form-control" type="text" name="user" value={this.state.inputUser} required />
@@ -655,8 +670,8 @@ class PageApp extends React.Component {
             <label htmlFor="pass">Password</label>
             <input onChange={this.inputPass} placeholder="Password" className="form-control" type="password" name="pass" value={this.state.inputPass} required />
           </div>
-          <input type='submit' value="tambah" className="btn btn-primary"/>
-        </form>
+          <a className="btn btn-primary" onClick={this.submitUser}>Tambah</a>
+
 
     </BoxDefault> : "";
   return (
