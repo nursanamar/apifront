@@ -735,7 +735,7 @@ console.log(localStorage.getItem("token"));
 	});
 	var forms = this.state.forms;
 	var button = this.state.button;
-	var add = (this.state.isopen === "no") ? null : <div className= "row">
+	var add = (this.state.isopen === "no") ? null :
       		<BoxDefault tittle="Tambah Table" >
       			<div className="row">
       				<div className="col-xs-5">
@@ -761,7 +761,7 @@ console.log(localStorage.getItem("token"));
       				</div>
       			</div>
       		</BoxDefault>
-       </div>;
+      ;
   return (
     <PageLte header="Menu Tabel" desc="Buat dan hapus tabel">
       <div className="row">
