@@ -292,7 +292,7 @@ const FooterLte = (props) => {
         Develope By Nursan amar
       </div>
       {/* <!-- Default to the left --> */}
-      <strong>Copyright &copy; 2017 <a href="#">SiBolos</a>.</strong> All rights reserved.
+      <strong>Copyright &copy; 2017 <a href="#">ApiBuilder</a>.</strong> All rights reserved.
     </footer>
   )
 }

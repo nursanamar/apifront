@@ -292,7 +292,7 @@ const FooterLte = (props) => {
         Develope By Nursan amar
       </div>
       {/* <!-- Default to the left --> */}
-      <strong>Copyright &copy; 2017 <a href="#">SiBolos</a>.</strong> All rights reserved.
+      <strong>Copyright &copy; 2017 <a href="#">ApiBuilder</a>.</strong> All rights reserved.
     </footer>
   )
 }
@@ -506,6 +506,31 @@ const TableRow = (props) => {
 	);
 }
 
+const Alert = (props) => {
+  var type = "";
+  switch (props.type) {
+    case "danger":
+      type = "alert-danger";
+      break;
+    case "info":
+      type = "alert-info";
+      break;
+    case "warning":
+      type = "alert-warning";
+      break;
+    case "succes":
+      type = "alert-succes";
+      break;
+  }
+  return (
+    <div className={"alert alert-dismissible "+type}>
+      <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4><i className="icon fa fa-ban"></i>{props.tittle}</h4>
+        {props.content}
+    </div>
+  )
+}
+
 /* --------------------- AdminLTE Components  ----------------------->>>>>> */
 
 /* <<<<<<--------------------- Main app ----------------------- */
@@ -700,12 +725,13 @@ console.log(localStorage.getItem("token"));
 
 	render() {
 	var rows = [];
+  var feedback = (this.state.feedback !== "") ? <Alert type="danger" tittle="Error" content={this.state.feedback} />: "";
 	var data = this.state.tableData;
 	data.map((row,key) => {
-		rows.push(<tr key={key}><td>{row.id}</td><td>{row.table}</td><td>{row.columns}</td><td>{row.hits}</td><td><a onClick={() => {
+		rows.push(<tr key={key}><td>{row.id}</td><td>{row.table}</td><td>{row.columns}</td><td>{row.hits}</td><td><a className="btn btn-danger btn-small" onClick={() => {
       console.log('clicked');
       this.deleteTable(row.id);
-		}}>Hapus</a></td></tr>);
+		}}><span className="glyphicon glyphicon-trash"></span></a></td></tr>);
 	});
 	var forms = this.state.forms;
 	var button = this.state.button;
@@ -726,10 +752,12 @@ console.log(localStorage.getItem("token"));
       			</div>
       			<div className="row">
       				<div className="col-sm-12">
-
+                  <div className="clearfix"></div>
       						{forms}
+                  <div className="clearfix"></div>
       						{button}
-                <span>{this.state.feedback}</span>
+                  <div className="clearfix"></div>
+                <span>{feedback}</span>
       				</div>
       			</div>
       		</BoxDefault>
