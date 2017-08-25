@@ -151,7 +151,12 @@ const User = (props) => {
             <a href="#" className="btn btn-default btn-flat">Profile</a>
           </div>
           <div className="pull-right">
-            <a href="#" className="btn btn-default btn-flat">Sign out</a>
+            <a href="#" className="btn btn-default btn-flat" onClick={() => {
+              localStorage.removeItem('token');
+              localStorage.removeItem('id');
+              localStorage.removeItem('name');
+              window.location.assign("login.html");
+            }}>Sign out</a>
           </div>
         </li>
       </ul>
