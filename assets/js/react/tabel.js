@@ -599,11 +599,16 @@ console.log(localStorage.getItem("token"));
   }
 
   deleteTable(id){
+    var temp = this.state.tableData;
     $.ajax({
-      "url":"http://localhost/apibud/table/"+id,
+      "url":"http://localhost/apibud/table/"+temp[0].id,
       "method": "DELETE",
     }).done(function(res){
-      this.componentDidMount();
+      temp.splice(id,1);
+      console.log(id,temp);
+      this.setState({
+        'tableData': temp
+      });
     }.bind(this))
   }
 
@@ -735,7 +740,7 @@ console.log(localStorage.getItem("token"));
 	data.map((row,key) => {
 		rows.push(<tr key={key}><td>{row.id}</td><td>{row.table}</td><td>{row.columns}</td><td>{row.hits}</td><td><a className="btn btn-danger btn-small" onClick={() => {
       console.log('clicked');
-      this.deleteTable(row.id);
+      this.deleteTable(key);
 		}}><span className="glyphicon glyphicon-trash"></span></a></td></tr>);
 	});
 	var forms = this.state.forms;

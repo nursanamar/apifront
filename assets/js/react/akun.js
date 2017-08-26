@@ -621,29 +621,29 @@ class PageApp extends React.Component {
     }.bind(this));
   }
 
-  deleteUser(id){
-    $.ajax({
-      "url":"http://localhost/apibud/user/"+id,
-      "method": "DELETE"
-    }).done(function(res) {
-      this.componentDidMount();
-    }.bind(this))
-  }
-
-  // /****NOTE: Butuh di tinjau ulang
   // deleteUser(id){
-  //   var temp = this.state.userList;
   //   $.ajax({
-  //     "url":"http://localhost/apibud/user/"+temp[id].id,
+  //     "url":"http://localhost/apibud/user/"+id,
   //     "method": "DELETE"
   //   }).done(function(res) {
-  //       temp.slice(id,1);
-  //       console.log(id,temp,temp.slice(id,1));
-  //       this.setState({
-  //         'userList': temp
-  //       })
+  //     this.componentDidMount();
   //   }.bind(this))
   // }
+
+  // NOTE: Butuh di tinjau ulang
+  deleteUser(id){
+    var temp = this.state.userList;
+    $.ajax({
+      "url":"http://localhost/apibud/user/"+temp[id].id,
+      "method": "DELETE"
+    }).done(function(res) {
+        temp.splice(id,1);
+        console.log(id,temp);
+        this.setState({
+          'userList': temp
+        })
+    }.bind(this))
+  }
 
   blockUser(id){
     var temp = this.state.userList;
@@ -691,7 +691,7 @@ class PageApp extends React.Component {
           <td>{data.pass}</td>
           <td>
             <a className="btn btn-sm btn-danger" onClick={() => {
-              this.deleteUser(data.id)
+              this.deleteUser(key)
             }}>
               <span className="glyphicon glyphicon-trash"></span>
               <b> Hapus</b>
