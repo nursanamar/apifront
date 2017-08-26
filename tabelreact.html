@@ -40,9 +40,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script type="text/babel" src="assets/js/react/tabel.js?version=1"></script>
   <style media="screen">
     .clearfix {
-      padding-bottom: 25px; 
+      padding-bottom: 25px;
     }
   </style>
+  <link rel="stylesheet" href="assets/pace/pace.css">
+
 </head>
   <body class="skin-blue sidebar-mini">
     <div class="wraper" id="root">
@@ -55,6 +57,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- <script src="assets/js/Chart.min.js"></script> -->
     <!-- AdminLTE App -->
     <script src="assets/js/app.js"></script>
+    <script src="assets/pace/pace.js"></script>
+    <script type="text/javascript">
+      $(document).ajaxStart(function() {
+        Pace.restart();
+      });
+    </script>
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
          Both of these plugins are recommended to enhance the
