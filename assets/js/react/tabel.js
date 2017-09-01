@@ -749,7 +749,7 @@ console.log(localStorage.getItem("token"));
       		<BoxDefault tittle="Tambah Table" >
       			<div className="row">
       				<div className="col-xs-5">
-      					<input type="text" className="form-control" placeholder="Nama tabel" onChange={this.tableName} value={this.state.tableName} />
+      					<input autoFocus type="text" className="form-control" placeholder="Nama tabel" onChange={this.tableName} value={this.state.tableName} />
       				</div>
       				<div className="col-xs-4 col-md-4 col-lg-4">
       					<input type="number" className="form-control" placeholder="Jumlah kolom" onChange={this.tableColumn} value={this.state.tableColumn} />
