@@ -516,7 +516,7 @@ class PageApp extends React.Component {
   }
 
   componentDidMount(){
-    $.get("http://localhost/apibud/stat",function(data) {
+    $.get(host+"/stat",function(data) {
       this.setState({
         'data': data
       })

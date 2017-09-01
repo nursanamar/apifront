@@ -520,7 +520,7 @@ class LoginApp extends React.Component {
       "pass": this.state.inputPass
     }
     console.log(data);
-    $.post("http://localhost/apibud/login",JSON.stringify(data)).done(function(res){
+    $.post(host+"/login",JSON.stringify(data)).done(function(res){
       var status = res.status;
       var desc = res.desc;
       var token = "";

@@ -608,7 +608,7 @@ class PageApp extends React.Component {
       "pass": this.state.inputPass,
       "name": this.state.inputName
     };
-    $.post("http://localhost/apibud/user",JSON.stringify(data)).done(function(res) {
+    $.post(host+"/user",JSON.stringify(data)).done(function(res) {
       var temp = this.state.userList;
       temp.push(res.data);
       this.setState({
@@ -623,7 +623,7 @@ class PageApp extends React.Component {
 
   // deleteUser(id){
   //   $.ajax({
-  //     "url":"http://localhost/apibud/user/"+id,
+  //     "url":host+"/user/"+id,
   //     "method": "DELETE"
   //   }).done(function(res) {
   //     this.componentDidMount();
@@ -634,7 +634,7 @@ class PageApp extends React.Component {
   deleteUser(id){
     var temp = this.state.userList;
     $.ajax({
-      "url":"http://localhost/apibud/user/"+temp[id].id,
+      "url":host+"/user/"+temp[id].id,
       "method": "DELETE"
     }).done(function(res) {
         temp.splice(id,1);
@@ -652,7 +652,7 @@ class PageApp extends React.Component {
       "isBlock": (temp[id].isBlock === '0') ? '1':'0'
     };
     $.ajax({
-      "url":"http://localhost/apibud/user/"+temp[id].id,
+      "url":host+"/user/"+temp[id].id,
       "method":"PUT",
       "data": JSON.stringify(data)
     }).done(function(res) {
@@ -671,7 +671,7 @@ class PageApp extends React.Component {
   }
 
   componentDidMount(){
-    $.get("http://localhost/apibud/user").done(function(res) {
+    $.get(host+"/user").done(function(res) {
       this.setState({
         'userList': res.data
       });

@@ -601,7 +601,7 @@ console.log(localStorage.getItem("token"));
   deleteTable(id){
     var temp = this.state.tableData;
     $.ajax({
-      "url":"http://localhost/apibud/table/"+temp[0].id,
+      "url":host+"/table/"+temp[0].id,
       "method": "DELETE",
     }).done(function(res){
       temp.splice(id,1);
@@ -613,7 +613,7 @@ console.log(localStorage.getItem("token"));
   }
 
   componentDidMount(){
-    $.get("http://localhost/apibud/table",function(data){
+    $.get(host+"/table",function(data){
       var tableList = [];
       data.data.forEach((data) => {
         tableList.push(data);
@@ -658,7 +658,7 @@ console.log(localStorage.getItem("token"));
 
     }
     console.log(table);
-    $.post("http://localhost/apibud/table",JSON.stringify(table)).done(
+    $.post(host+"/table",JSON.stringify(table)).done(
       function(res) {
         if (res.status === 'ok') {
           var list = this.state.tableData;
