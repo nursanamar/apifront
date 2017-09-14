@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 2 | Top Navigation</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="assets/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="assets/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="assets/css/code.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+<body class="hold-transition skin-blue layout-top-nav" id="preview">
+<div class="wrapper">
+
+  <header class="main-header">
+    <nav class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="../../index2.html" class="navbar-brand"><b>Api</b>Builder</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- /.navbar-collapse -->
+        <!-- Navbar Right Menu -->
+
+        <!-- /.navbar-custom-menu -->
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+  </header>
+  <!-- Full Width Column -->
+  <div class="content-wrapper">
+    <div class="container">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1><a id="_Dokumentasi_0"></a>- Dokumentasi</h1>
+        <h2><a id="Api_endpoint_2"></a>Api endpoint</h2>
+        <h3><a id="List_endpoint_4"></a>List endpoint</h3>
+        <ul>
+        <li><code>POST /login</code> login untuk mendapatkan Token</li>
+        <li><code>GET /&lt;nama-tabel&gt;</code> ambil data dari tabel</li>
+        <li><code>POST /&lt;nama-tabel&gt;</code> tambah data ke tabel</li>
+        <li><code>GET /&lt;nama-tabel&gt;/&lt;id&gt;</code> ambil data dari tabel berdasrkan id</li>
+        <li><code>PUT /&lt;nama-tabel&gt;/&lt;id&gt;</code> Ubah data di tabel</li>
+        <li><code>DELETE /&lt;nama-tabel&gt;/&lt;id&gt;</code> Hapus data</li>
+        </ul>
+        <h3><a id="login_13"></a>login</h3>
+        <p>Setiap request yang dikirm harus menyertakan token sebagai autentikasi. Token bisa di dapatkan mengunakan login endpoint <code>POST /login</code></p>
+        <h5><a id="Request_16"></a>Request</h5>
+        <pre><code class="language-http"><span class="hljs-request">POST <span class="hljs-string">/login</span> HTTP/1.1</span>
+        <span class="hljs-attribute">Host</span>: <span class="hljs-string">&lt;your-host&gt;</span>
+        <span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span>
+
+        <span class="elixir">{<span class="hljs-string">"user"</span><span class="hljs-symbol">:&lt;username&gt;</span>,<span class="hljs-string">"pass"</span><span class="hljs-symbol">:&lt;password&gt;</span>}
+        </span></code></pre>
+        <p>Header <code>Content-Type: application/json</code> harus selalu disertakan</p>
+        <h5><a id="Response_26"></a>Response</h5>
+        <p>Jika login berhasil anda akan mendapatkan respon seperti ini</p>
+        <pre><code class="language-http">HTTP 200 OK
+        Access-Control-Allow-Origin: *
+        X-Message: ApiBuilder/1.0
+        Server: ApiBuilder
+        Content-Type: application/json
+
+        {
+            "status": "ok",
+            "desc": "Login succes",
+            "data": {
+                "token": &lt;your token&gt;,
+                "user": {
+                    "id": &lt;id&gt;,
+                    "name": &lt;User full name&gt;
+                }
+            }
+        }
+        </code></pre>
+        <p>Anda bisa mengunakan <code>data.token</code> sebagai token anda unruk request berikutnya</p>
+        <p>Tapi Jika login gagal respon yang akan anda dapatkan adalah</p>
+        <pre><code class="language-http">HTTP 200 OK
+        Access-Control-Allow-Origin: *
+        X-Message: ApiBuilder/1.0
+        Server: ApiBuilder
+        Content-Type: application/json
+
+        {
+            "status": "failed",
+            "desc": "login failed, please check your pass"
+        }
+        </code></pre>
+        <p>Itu artinya anda harus memeriksa user dan pass yang anda kirim</p>
+        <h3><a id="Ambil_data_65"></a>Ambil data</h3>
+        <p>Untuk megambil data sementara hanya tersedia fitur ambil semua dan ambil berdasarkan ID data</p>
+        <p>Setiap request selain login harus menyertakan Header <code>Authorization: Bearer &lt;your-token&gt;</code> yang berisi token yang di dapat pada saat login, jika tidak maka respon akan mengembalikan status header <code>401</code></p>
+        <h4><a id="Ambil_semua_70"></a>Ambil semua</h4>
+        <h5><a id="Request_71"></a>Request</h5>
+        <pre><code class="language-http"><span class="hljs-request">GET <span class="hljs-string">/&lt;nama-tabel&gt;</span> HTTP/1.1</span>
+        <span class="hljs-attribute">Host</span>: <span class="hljs-string">&lt;your-host&gt;</span>
+        <span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span>
+        <span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer &lt;your-token&gt;</span>
+        </code></pre>
+        <h5><a id="Respon_80"></a>Respon</h5>
+        <pre><code class="language-http">HTTP 200 OK
+        Access-Control-Allow-Origin: *
+        X-Message: ApiBuilder/1.0
+        Server: ApiBuilder
+        Content-Type: application/json
+
+        {
+            "status": "ok",
+            "desc": "data fetched",
+            "data": [
+                {
+                    "id":"&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;"
+                },
+                {
+                    "id":"&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;"
+                },
+
+                ........
+            ]
+        }
+        </code></pre>
+        <h4><a id="Ambil_berdasarkan_ID_110"></a>Ambil berdasarkan ID</h4>
+        <p>Setiap tabel memiliki kolom id dan anda dapat mengunakannya untuk mengambil data tertentu</p>
+        <h5><a id="Request_114"></a>Request</h5>
+        <pre><code class="language-http"><span class="hljs-request">GET <span class="hljs-string">/&lt;nama-tabel&gt;/&lt;id&gt;</span> HTTP/1.1</span>
+        <span class="hljs-attribute">Host</span>: <span class="hljs-string">&lt;your-host&gt;</span>
+        <span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span>
+        <span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer &lt;your-token&gt;</span>
+        </code></pre>
+        <h5><a id="Respons_122"></a>Respons</h5>
+        <pre><code class="language-http">HTTP 200 OK
+        Access-Control-Allow-Origin: *
+        X-Message: ApiBuilder/1.0
+        Server: ApiBuilder
+        Content-Type: application/json
+
+        {
+            "status": "ok",
+            "desc": "data fetched",
+            "data": [
+                {
+                    "id":"&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;",
+                    "&lt;field-name&gt;": "&lt;value&gt;"
+                },
+
+            ]
+        }
+        </code></pre>
+        <h3><a id="Tambah_data_146"></a>Tambah data</h3>
+        <h5><a id="Request_148"></a>Request</h5>
+        <pre><code class="language-http"><span class="hljs-request">POST <span class="hljs-string">/&lt;nama-tabel&gt;</span> HTTP/1.1</span>
+        <span class="hljs-attribute">Host</span>: <span class="hljs-string">&lt;your-host&gt;</span>
+        <span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span>
+        <span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer &lt;your-token&gt;</span>
+
+        <span class="json">[
+          {
+            "<span class="hljs-attribute">&lt;field-name&gt;</span>": <span class="hljs-value"><span class="hljs-string">"&lt;value&gt;"</span></span>,
+            "<span class="hljs-attribute">&lt;field-name&gt;</span>": <span class="hljs-value"><span class="hljs-string">"&lt;value&gt;"</span></span>,
+            "<span class="hljs-attribute">&lt;field-name&gt;</span>": <span class="hljs-value"><span class="hljs-string">"&lt;value&gt;"</span>
+          </span>}
+        ]
+        </span></code></pre>
+        <h5><a id="Respons_165"></a>Respons</h5>
+        <pre><code class="language-http">HTTP 201 CREATED
+        Access-Control-Allow-Origin: *
+        X-Message: ApiBuilder/1.0
+        Server: ApiBuilder
+        Content-Type: application/json
+
+        {
+            "status": "ok",
+            "effect": 1,
+            "data": [
+            {
+              "id":"&lt;value&gt;"
+              "&lt;field-name&gt;": "&lt;value&gt;",
+              "&lt;field-name&gt;": "&lt;value&gt;",
+              "&lt;field-name&gt;": "&lt;value&gt;"
+            }
+            ]
+        }
+        </code></pre>
+        <h3><a id="Edit_data_188"></a>Edit data</h3>
+        <h5><a id="Request_190"></a>Request</h5>
+        <pre><code class="language-http"><span class="hljs-request">PUT <span class="hljs-string">/&lt;nama-tabel&gt;/&lt;id&gt;</span> HTTP/1.1</span>
+        <span class="hljs-attribute">Host</span>: <span class="hljs-string">&lt;your-host&gt;</span>
+        <span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span>
+        <span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer &lt;your-token&gt;</span>
+
+        <span class="json">  {
+            "<span class="hljs-attribute">&lt;field-name&gt;</span>": <span class="hljs-value"><span class="hljs-string">"&lt;value&gt;"</span></span>,
+            "<span class="hljs-attribute">&lt;field-name&gt;</span>": <span class="hljs-value"><span class="hljs-string">"&lt;value&gt;"</span></span>,
+            "<span class="hljs-attribute">&lt;field-name&gt;</span>": <span class="hljs-value"><span class="hljs-string">"&lt;value&gt;"</span>
+          </span>}
+        </span></code></pre>
+        <p>Anda bisa mengirim kolom dalam bentuk lengkap seperti di atas atau cukup kolom yang ingin di ubah nilainya</p>
+        <h5><a id="Respons_206"></a>Respons</h5>
+        <pre><code class="language-http">HTTP 200 OK
+        Access-Control-Allow-Origin: *
+        X-Message: ApiBuilder/1.0
+        Server: ApiBuilder
+        Content-Type: application/json
+
+        {
+            "status": "ok",
+            "effect": 1,
+            "data": [
+            {
+              "id":"&lt;value&gt;"
+              "&lt;field-name&gt;": "&lt;value&gt;",
+              "&lt;field-name&gt;": "&lt;value&gt;",
+              "&lt;field-name&gt;": "&lt;value&gt;"
+            }
+            ]
+        }
+        </code></pre>
+        <p>Respon akan mengembalikan data dalam bentuk lengkap yang telah diubah</p>
+        <h3><a id="Hapus_data_231"></a>Hapus data</h3>
+        <h5><a id="Request_233"></a>Request</h5>
+        <pre><code class="language-http"><span class="hljs-request">DELETE <span class="hljs-string">/&lt;nama-tabel&gt;/&lt;id&gt;</span> HTTP/1.1</span>
+        <span class="hljs-attribute">Host</span>: <span class="hljs-string">&lt;your-host&gt;</span>
+        <span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span>
+        <span class="hljs-attribute">Authorization</span>: <span class="hljs-string">Bearer &lt;your-token&gt;</span>
+        </code></pre>
+        <h5><a id="Respons_242"></a>Respons</h5>
+        <p>Respon hanya akan mengembalikan status code <code>204</code></p>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="box box-default">
+          <div class="box-header with-border">
+            <h3 class="box-title">Endpoint</h3>
+          </div>
+          <div class="box-body">
+            <h1>Api endpoint</h1>
+            <h2>List endpoint</h2>
+            <ol>
+              <li><code>POST /login</code> login untuk mendapatkan Token</li>
+              <li><code>GET /<nama-tabel></code> ambil data dari tabel</li>
+              <li><code>POST /<nama-tabel></code> tambah data ke tabel</li>
+              <li><code>GET /<nama-tabel>/<id></code> ambil data dari tabel berdasrkan id</li>
+              <li><code>PUT /<nama-tabel>/<id></code> Ubah data di tabel</li>
+              <li><code>DELETE /<nama-tabel>/<id></code> Hapus data</li>
+            </ol>
+
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.container -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="container">
+      <strong>Copyright>Nursan amar</a>.</strong> All rights
+      reserved.
+    </div>
+    <!-- /.container -->
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+</body>
+</html>
